@@ -1,0 +1,167 @@
+<div class="suppliers-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <a routerLink="/dashboard" class="back-button">
+      <span class="back-icon">←</span>
+    </a>
+    <div class="header-content">
+      <h1>Suppliers Management</h1>
+      <p class="subtitle">Manage and track all your suppliers in one place</p>
+    </div>
+  </div>
+
+  <!-- Stats Card -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">🏢</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ suppliers.length }}</div>
+        <div class="stat-label">Total Suppliers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar & Add Button -->
+  <div class="suppliers-toolbar">
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search suppliers by name, ID, email, or phone..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+    </div>
+    <button class="add-supplier-btn" (click)="openAddForm()">
+      <span class="btn-icon">➕</span>
+      <span>Add Supplier</span>
+    </button>
+  </div>
+
+  <!-- Suppliers Table -->
+  <div class="suppliers-table-section">
+    <div class="table-wrapper">
+      <table class="suppliers-table">
+        <thead>
+          <tr>
+            <th>Supplier ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supplier of filteredSuppliers">
+            <td>
+              <span class="supplier-id-tag">{{ supplier.supplierId }}</span>
+            </td>
+            <td>
+              <div class="supplier-name-cell">
+                <span class="supplier-icon">🏬</span>
+                <span class="supplier-name">{{ supplier.name }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="supplier-email">{{ supplier.email }}</span>
+            </td>
+            <td>
+              <span class="supplier-phone">{{ supplier.phone }}</span>
+            </td>
+            <td>
+              <span class="supplier-address">{{ supplier.address }}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn edit-btn" (click)="openEditForm(supplier)">
+                  <span class="action-icon">✏️</span>
+                  Edit
+                </button>
+                <button class="action-btn delete-btn" (click)="onDelete(supplier)">
+                  <span class="action-icon">🗑️</span>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredSuppliers.length === 0">
+        <div class="empty-icon">🏢</div>
+        <h3>No suppliers found</h3>
+        <p>Try adjusting your search or add a new supplier</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-over Form -->
+  <div class="supplier-form-overlay" *ngIf="isFormOpen">
+    <div class="supplier-form-card">
+      <div class="form-header">
+        <h2>{{ isEditMode ? 'Edit Supplier' : 'Add Supplier' }}</h2>
+        <button class="close-btn" (click)="cancelForm()">✕</button>
+      </div>
+
+      <form (ngSubmit)="submitForm()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              [(ngModel)]="formModel.name"
+              name="name"
+              placeholder="Enter supplier name"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              [(ngModel)]="formModel.email"
+              name="email"
+              placeholder="supplier@example.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input
+              id="phone"
+              type="text"
+              [(ngModel)]="formModel.phone"
+              name="phone"
+              placeholder="+1 (555) 123-4567"
+            />
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="address">Address</label>
+            <input
+              id="address"
+              type="text"
+              [(ngModel)]="formModel.address"
+              name="address"
+              placeholder="Street, City, Province, Postal Code"
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelForm()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">
+            {{ isEditMode ? 'Save Changes' : 'Add Supplier' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

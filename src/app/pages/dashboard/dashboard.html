@@ -1,0 +1,127 @@
+<div class="dashboard-container">
+  <!-- Left Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">📦</span>
+        <span class="logo-text">Inventory Managemnet System</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard" class="nav-item active">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-text">Dashboard</span>
+      </a>
+      <a routerLink="/products" class="nav-item active">
+        <span class="nav-icon">📦</span>
+        <span class="nav-text">Products</span>
+      </a>
+      <a routerLink="/categories" class="nav-item active">
+        <span class="nav-icon">📑</span>
+        <span class="nav-text">Categories</span>
+      </a>
+      <a routerLink="/suppliers" class="nav-item active">
+        <span class="nav-icon">🏢</span>
+        <span class="nav-text">Suppliers</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Top Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <h1>Dashboard</h1>
+        <p class="subtitle">Welcome back! Here's your inventory overview.</p>
+      </div>
+    </div>
+
+    <!-- Summary Cards Grid -->
+    <div class="cards-grid" *ngIf="stats">
+      <!-- Total Products Card -->
+      <div class="metric-card card-1">
+        <div class="card-background"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon-wrapper icon-blue">
+              <span class="card-icon">📦</span>
+            </div>
+            <div class="card-badge">Products</div>
+          </div>
+          <div class="card-body">
+            <div class="metric-value">
+              {{ stats ? stats.totalProducts : 0 }}
+            </div>
+            <div class="metric-label">Total Products</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Stock Card -->
+      <div class="metric-card card-2">
+        <div class="card-background"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon-wrapper icon-green">
+              <span class="card-icon">📊</span>
+            </div>
+            <div class="card-badge">Inventory</div>
+          </div>
+          <div class="card-body">
+            <div class="metric-value">
+              {{ stats ? stats.totalStock : 0 }}
+            </div>
+            <div class="metric-label">Total Stock</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Suppliers Card -->
+      <div class="metric-card card-3">
+        <div class="card-background"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon-wrapper icon-purple">
+              <span class="card-icon">🏢</span>
+            </div>
+            <div class="card-badge">Suppliers</div>
+          </div>
+          <div class="card-body">
+            <div class="metric-value">
+              {{ stats ? stats.totalSuppliers : 0 }}
+            </div>
+            <div class="metric-label">Total Suppliers</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Categories Card -->
+      <div class="metric-card card-4">
+        <div class="card-background"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-icon-wrapper icon-orange">
+              <span class="card-icon">📑</span>
+            </div>
+            <div class="card-badge">Categories</div>
+          </div>
+          <div class="card-body">
+            <div class="metric-value">
+              {{ stats ? stats.totalCategories : 0 }}
+            </div>
+            <div class="metric-label">Total Categories</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional loading / error messages -->
+    <div *ngIf="isLoading" style="margin-top: 24px; text-align: center;">
+      Loading dashboard data…
+    </div>
+    <div *ngIf="!isLoading && errorMessage" style="margin-top: 24px; text-align: center; color: #fca5a5;">
+      {{ errorMessage }}
+    </div>
+  </main>
+</div>

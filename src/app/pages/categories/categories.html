@@ -1,0 +1,134 @@
+<div class="categories-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <a routerLink="/dashboard" class="back-button">
+      <span class="back-icon">←</span>
+    </a>
+    <div class="header-content">
+      <h1>Categories Management</h1>
+      <p class="subtitle">Organize and manage your product categories</p>
+    </div>
+  </div>
+
+  <!-- Stats Card -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📑</div>
+      <div class="stat-content">
+        <div class="stat-value">{{ categories.length }}</div>
+        <div class="stat-label">Total Categories</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar & Add Button -->
+  <div class="categories-toolbar">
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search categories by name or ID..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+    </div>
+    <button class="add-category-btn" (click)="onAddCategory()">
+      <span class="btn-icon">➕</span>
+      <span>Add Category</span>
+    </button>
+  </div>
+
+  <!-- Categories Table -->
+  <div class="categories-table-section">
+    <div class="table-wrapper">
+      <table class="categories-table">
+        <thead>
+          <tr>
+            <th>Category ID</th>
+            <th>Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of filteredCategories">
+            <td>
+              <span class="category-id-tag">{{ category.id }}</span>
+            </td>
+            <td>
+              <div class="category-name-cell">
+                <span class="category-icon">📁</span>
+                <span class="category-name">{{ category.name }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn edit-btn" (click)="onEdit(category)">
+                  <span class="action-icon">✏️</span>
+                  Edit
+                </button>
+                <button class="action-btn delete-btn" (click)="onDelete(category)">
+                  <span class="action-icon">🗑️</span>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredCategories.length === 0">
+        <div class="empty-icon">📑</div>
+        <h3>No categories found</h3>
+        <p>Try adjusting your search or add a new category</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Form Modal (Add / Edit) -->
+  <div class="category-form-overlay" *ngIf="isFormOpen">
+    <div class="category-form-card">
+      <div class="form-header">
+        <h2>{{ isEditMode ? 'Edit Category' : 'Add Category' }}</h2>
+        <button class="close-btn" (click)="onCancelForm()">✕</button>
+      </div>
+
+      <form (ngSubmit)="onSubmitForm()">
+        <div class="form-grid">
+          <!-- Show ID only in edit mode -->
+          <div class="form-group" *ngIf="isEditMode">
+            <label for="categoryId">Category ID</label>
+            <input
+              id="categoryId"
+              type="text"
+              [value]="formModel.displayId || formModel.categoryId"
+              readonly
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="name">Category Name</label>
+            <input
+              id="name"
+              type="text"
+              [(ngModel)]="formModel.name"
+              name="name"
+              placeholder="Enter category name"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="onCancelForm()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">
+            {{ isEditMode ? 'Save Changes' : 'Create Category' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

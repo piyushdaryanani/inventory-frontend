@@ -1,0 +1,355 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===============================================
+   GLOBAL BACKGROUND
+   =============================================== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Full-page warehouse background with dark overlay */
+  background:
+    linear-gradient(
+      to bottom right,
+      rgba(15, 23, 42, 0.95),
+      rgba(30, 41, 59, 0.93)
+    ),
+    url('/back.png') center / cover no-repeat;
+  background-attachment: fixed, fixed;
+}
+
+/* Wrapper around sidebar + main content */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* ===============================================
+   SIDEBAR STYLES
+   =============================================== */
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, rgba(20, 28, 50, 0.98) 0%, rgba(15, 23, 42, 0.98) 100%);
+  border-right: 1px solid rgba(99, 102, 241, 0.3);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 8px 0 40px rgba(0, 0, 0, 0.5), inset -1px 0 0 rgba(99, 102, 241, 0.15);
+  backdrop-filter: blur(20px);
+}
+
+.sidebar-header {
+  padding: 32px 24px;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.25);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  font-size: 2em;
+  filter: drop-shadow(0 4px 16px rgba(249, 115, 22, 0.7));
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    filter: drop-shadow(0 4px 16px rgba(249, 115, 22, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 6px 24px rgba(249, 115, 22, 0.9));
+  }
+}
+
+.logo-text {
+  font-size: 1.35em;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f97316 0%, #facc15 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(249, 115, 22, 0.5));
+  letter-spacing: -0.5px;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 32px 16px;
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  transform: scaleY(0);
+  transition: transform 0.35s ease;
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  border-radius: 16px;
+}
+
+.nav-item:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #f0f4ff;
+  transform: translateX(8px);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+}
+
+.nav-item:hover::before {
+  transform: scaleY(1);
+}
+
+.nav-item:hover::after {
+  opacity: 1;
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  box-shadow: 0 10px 35px rgba(99, 102, 241, 0.45), 0 0 35px rgba(139, 92, 246, 0.35);
+  transform: translateX(4px);
+}
+
+.nav-item.active::before {
+  transform: scaleY(1);
+  background: white;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.nav-item.active::after {
+  opacity: 0;
+}
+
+.nav-icon {
+  font-size: 1.4em;
+  margin-right: 14px;
+  width: 26px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-text {
+  font-size: 1.02em;
+  font-family: Gurmukhi MN;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================================
+   MAIN CONTENT AREA
+   =============================================== */
+.main-content {
+  flex: 1;
+  margin-left: 240px;
+  padding: 36px 48px 40px;
+  min-height: 100vh;
+  background: transparent;
+  color: #e5e7eb;
+}
+
+/* Header text sits directly on the dark background */
+.page-header {
+  margin-bottom: 32px;
+  animation: fadeInDown 0.5s ease;
+}
+
+.header-content h1 {
+  font-size: 2.2em;
+  text-align: center;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f9fafb 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+  text-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.subtitle {
+  font-size: 1em;
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* ===============================================
+   METRIC CARDS GRID
+   =============================================== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+/* Modern dark glassy cards */
+.metric-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  color: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s ease;
+  animation-fill-mode: both;
+  backdrop-filter: blur(16px);
+}
+
+.metric-card.card-1 { animation-delay: 0.08s; }
+.metric-card.card-2 { animation-delay: 0.16s; }
+.metric-card.card-3 { animation-delay: 0.24s; }
+.metric-card.card-4 { animation-delay: 0.32s; }
+
+.metric-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(99, 102, 241, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.card-background {
+  position: absolute;
+  top: -50%;
+  right: -30%;
+  width: 200px;
+  height: 200px;
+  opacity: 0.12;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+
+.card-1 .card-background { background: #3b82f6; }
+.card-2 .card-background { background: #10b981; }
+.card-3 .card-background { background: #8b5cf6; }
+.card-4 .card-background { background: #f59e0b; }
+
+.card-content {
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.icon-blue { 
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+  color: #dbeafe;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+}
+.icon-green { 
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+  color: #d1fae5;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+}
+.icon-purple { 
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); 
+  color: #ede9fe;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+}
+.icon-orange { 
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+  color: #fef3c7;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+.card-badge {
+  background: rgba(99, 102, 241, 0.15);
+  color: #c7d2fe;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.7em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.card-body {
+  margin-bottom: 16px;
+}
+
+.metric-value {
+  font-size: 2.5em;
+  font-family: Gurmukhi MN;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f9fafb 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.metric-label {
+  font-size: 0.9em;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* ... rest of your file unchanged ... */

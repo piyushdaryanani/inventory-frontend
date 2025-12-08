@@ -1,0 +1,202 @@
+<div class="products-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <a routerLink="/dashboard" class="back-button">
+      <span class="back-icon">←</span>
+    </a>
+    <div class="header-content">
+      <h1>Products Management</h1>
+      <p class="subtitle">Manage your inventory products</p>
+    </div>
+  </div>
+
+  <!-- Search Bar & Add Button -->
+  <div class="products-toolbar">
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search products by name, ID, SKU, or category..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+    </div>
+    <button class="add-product-btn" (click)="onAddProduct()">
+      <span class="btn-icon">➕</span>
+      <span>Add Product</span>
+    </button>
+  </div>
+
+  <!-- Products Table -->
+  <div class="products-table-section">
+    <div class="table-wrapper">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th>Product ID</th>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+            <td>
+              <span class="product-id-tag">{{ product.id }}</span>
+            </td>
+            <td>
+              <span class="sku-tag">{{ product.sku }}</span>
+            </td>
+            <td>
+              <div class="product-name-cell">
+                <span class="product-name">{{ product.name }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="category-badge">{{ product.category }}</span>
+            </td>
+            <td>
+              <span class="supplier-text">{{ product.supplier }}</span>
+            </td>
+            <td>
+              <span class="price-text">${{ product.price | number:'1.2-2' }}</span>
+            </td>
+            <td>
+              <span
+                class="stock-badge"
+                [ngClass]="{
+                  'stock-good': product.stock > 20,
+                  'stock-low': product.stock <= 20 && product.stock > 5,
+                  'stock-out': product.stock <=5 
+                }"
+              >
+                {{ product.stock }} units
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn edit-btn" (click)="onEdit(product)">
+                  <span class="action-icon">✏️</span>
+                  Edit
+                </button>
+                <button class="action-btn delete-btn" (click)="onDelete(product)">
+                  <span class="action-icon">🗑️</span>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="filteredProducts.length === 0">
+        <div class="empty-icon">📦</div>
+        <h3>No products found</h3>
+        <p>Try adjusting your search or add a new product</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide-over Form (like suppliers) -->
+  <div class="product-form-overlay" *ngIf="isFormOpen">
+    <div class="product-form-card">
+      <div class="form-header">
+        <h2>{{ isEditMode ? 'Edit Product' : 'Add Product' }}</h2>
+        <button class="close-btn" (click)="onCancelForm()">✕</button>
+      </div>
+
+      <form (ngSubmit)="onSubmitForm()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              id="name"
+              type="text"
+              [(ngModel)]="formModel.name"
+              name="name"
+              placeholder="Enter product name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="sku">SKU</label>
+            <input
+              id="sku"
+              type="text"
+              [(ngModel)]="formModel.sku"
+              name="sku"
+              placeholder="e.g. SKU-12345"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price (CAD)</label>
+            <input
+              id="price"
+              type="number"
+              [(ngModel)]="formModel.price"
+              name="price"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="stock">Stock (quantity)</label>
+            <input
+              id="stock"
+              type="number"
+              [(ngModel)]="formModel.stock"
+              name="stock"
+              min="0"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="categoryId">Category ID</label>
+            <input
+              id="categoryId"
+              type="number"
+              [(ngModel)]="formModel.categoryId"
+              name="categoryId"
+              min="1"
+              placeholder="Category ID"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="supplierId">Supplier ID</label>
+            <input
+              id="supplierId"
+              type="number"
+              [(ngModel)]="formModel.supplierId"
+              name="supplierId"
+              min="1"
+              placeholder="Supplier ID"
+            />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="onCancelForm()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">
+            {{ isEditMode ? 'Save Changes' : 'Create Product' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
